@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "phase": "Voter Registration",
+    "title": "Empowering Your Vote",
+    "summary": "The first step is ensuring your name is in the Electoral Roll.",
+    "description": "In India, any citizen aged 18 or above can register. You need to fill 'Form 6' on the NVSP portal or via the Voter Helpline App. Once processed, you receive an EPIC (Electoral Photo Identity Card). Registration stays open year-round except once the election is announced for your area.",
+    "keyConcepts": ["Form 6", "NVSP Portal", "EPIC card", "Electoral Roll"],
+    "misconception": "If I have a Voter ID, I can vote even if my name is missing from the roll. (False: Your name MUST be in the Electoral Roll!)",
+    "icon": "UserPlus"
+  },
+  {
+    "id": 2,
+    "phase": "Election Announcement",
+    "title": "The Call to Democracy",
+    "summary": "The Election Commission of India (ECI) announces the schedule.",
+    "description": "As soon as the ECI announces the dates, the 'Model Code of Conduct' (MCC) comes into force. This ensures a level playing field, preventing the ruling government from announcing new schemes or using official machinery for campaigning.",
+    "keyConcepts": ["ECI", "MCC", "Election Schedule", "Level Playing Field"],
+    "misconception": "The government can announce new projects during elections. (False: The Model Code of Conduct prohibits this!)",
+    "icon": "Megaphone"
+  },
+  {
+    "id": 3,
+    "phase": "Nomination & Scrutiny",
+    "title": "The Candidates list",
+    "summary": "Candidates file their papers and undergo verification.",
+    "description": "Candidates file their nominations along with an affidavit (Form 26) disclosing their assets, liabilities, and criminal records. The Returning Officer then 'scrutinizes' the papers to ensure they meet eligibility criteria. Candidates have a window to withdraw their names.",
+    "keyConcepts": ["Nomination Form", "Affidavit", "Scrutiny", "Withdrawal"],
+    "misconception": "Anyone can contest regardless of records. (False: Candidates must disclose all details and meet age/citizenship criteria!)",
+    "icon": "Target"
+  },
+  {
+    "id": 4,
+    "phase": "Election Campaign",
+    "title": "Sharing the Vision",
+    "summary": "Parties and candidates present their manifestos to the public.",
+    "description": "Campaigning involves rallies, door-to-door visits, and digital outreach. It must stop 48 hours before the conclusion of the poll (Silent Period). Candidates must also stick to the expenditure limits set by the ECI.",
+    "keyConcepts": ["Manifesto", "Silent Period", "Rallies", "Expenditure Limit"],
+    "misconception": "Campaigning can continue until the morning of voting. (False: It must stop 48 hours before the poll ends!)",
+    "icon": "Flag"
+  },
+  {
+    "id": 5,
+    "phase": "Polling Day",
+    "title": "The Big Day",
+    "summary": "Voters visit booths to cast their ballots using EVMs and VVPATs.",
+    "description": "Voting happens via Electronic Voting Machines (EVMs). The Voter Verifiable Paper Audit Trail (VVPAT) allows you to see a slip for 7 seconds to confirm your vote went to the right candidate. Every booth is managed by a Presiding Officer and Polling Agents.",
+    "keyConcepts": ["EVM", "VVPAT", "Indelible Ink", "Polling Booth"],
+    "misconception": "I can vote without any ID if I know the officer. (False: You need an ID like EPIC, Aadhaar, or DL, and your name must be in the roll!)",
+    "icon": "CheckSquare"
+  },
+  {
+    "id": 6,
+    "phase": "Vote Counting",
+    "title": "The Tally",
+    "summary": "Votes are counted under strict supervision of observers.",
+    "description": "Counting usually happens a few days after all phases of polling are complete. EVMs are brought out of 'Strong Rooms' (heavily guarded) and counted in the presence of candidate representatives. Results are updated in real-time on the ECI website.",
+    "keyConcepts": ["Strong Room", "Counting Center", "Real-time Updates", "Observers"],
+    "misconception": "EVMs can be tampered with easily. (False: They are standalone machines with multiple layers of physical and technical security!)",
+    "icon": "BarChart2"
+  },
+  {
+    "id": 7,
+    "phase": "Declaration of Results",
+    "title": "The People's Mandate",
+    "summary": "The candidate with the most votes is declared the winner.",
+    "description": "In India's 'First-Past-The-Post' system, the candidate with the highest number of votes in a constituency wins. The results are officially certified, and the list of elected members is sent to the President or Governor.",
+    "keyConcepts": ["Constituency", "Victory Certificate", "First-Past-The-Post"],
+    "misconception": "A candidate must get more than 50% of the total votes to win. (False: They just need to have more votes than any other single candidate!)",
+    "icon": "Award"
+  },
+  {
+    "id": 8,
+    "phase": "Government Formation",
+    "title": "Building the Future",
+    "summary": "The winning party or coalition forms the government.",
+    "description": "The President (for Center) or Governor (for State) invites the leader of the party or coalition with the majority (more than 50% of seats) to form the government. The elected members take an oath and begin their 5-year term.",
+    "keyConcepts": ["Majority Mark", "Coalition", "Oath of Office", "5-year Term"],
+    "misconception": "The President chooses the Prime Minister arbitrarily. (False: They must invite the leader with the proven majority!)",
+    "icon": "Landmark"
+  }
+]
