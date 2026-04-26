@@ -1,61 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, CheckCircle2, XCircle, ArrowRight, RotateCcw, ShieldCheck, Star, Zap, Landmark } from 'lucide-react';
+import { Trophy, CheckCircle2, XCircle, ArrowRight, RotateCcw, ShieldCheck, Star, Landmark } from 'lucide-react';
+import { db, trackEvent } from '../services/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import quizData from '../data/quizData.json';
 
-const QUIZ_DATA = [
-  {
-    id: 1,
-    question: "What is the minimum age to register as a voter in India?",
-    options: ["16 Years", "18 Years", "21 Years", "25 Years"],
-    answer: 1,
-    explanation: "According to the Constitution of India, every citizen who is 18 years of age or older is entitled to be registered as a voter."
-  },
-  {
-    id: 2,
-    question: "What does VVPAT stand for in the voting process?",
-    options: [
-      "Voter Verified Paper Audit Trail",
-      "Voter Value Print Action Tool",
-      "Visual Voter Paper Account Task",
-      "Voter Validated Power Audit Tech"
-    ],
-    answer: 0,
-    explanation: "VVPAT stands for Voter Verifiable Paper Audit Trail. It allows voters to verify that their vote was cast correctly."
-  },
-  {
-    id: 3,
-    question: "Which body conducts elections to the Parliament and State Legislatures in India?",
-    options: [
-      "Supreme Court of India",
-      "Ministry of Home Affairs",
-      "Election Commission of India",
-      "Planning Commission"
-    ],
-    answer: 2,
-    explanation: "The Election Commission of India (ECI) is an autonomous constitutional authority responsible for administering election processes in India."
-  },
-  {
-    id: 4,
-    question: "How many Lok Sabha constituencies are there in India?",
-    options: ["543", "250", "400", "552"],
-    answer: 0,
-    explanation: "There are currently 543 constituencies in the Lok Sabha. The members are elected from these constituencies via direct elections."
-  },
-  {
-    id: 5,
-    question: "What is the 'Silent Period' before polling starts?",
-    options: [
-      "12 hours before poll ends",
-      "24 hours before poll starts",
-      "48 hours before conclusion of poll",
-      "Immediately after results are declared"
-    ],
-    answer: 2,
-    explanation: "Election campaigning must stop 48 hours before the conclusion of the poll. This is known as the 'Silent Period'."
-  }
-];
-
-const QuizEngine = () => {
+const QuizSystem = () => {
   const [started, setStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -76,23 +26,42 @@ const QuizEngine = () => {
     if (isAnswered) return;
     setSelectedOption(index);
     setIsAnswered(true);
-    if (index === QUIZ_DATA[currentQuestion].answer) {
+    if (index === quizData[currentQuestion].answer) {
       setScore(prev => prev + 1);
     }
   };
 
+  const saveScore = async (finalScore) => {
+    try {
+      await addDoc(collection(db, 'quiz_scores'), {
+        score: finalScore,
+        total: quizData.length,
+        timestamp: serverTimestamp(),
+        anonymous: true
+      });
+      
+      trackEvent('quiz_completed', {
+        score: finalScore,
+        percentage: (finalScore / quizData.length) * 100
+      });
+    } catch (e) {
+      console.warn("Could not save score to Firestore:", e);
+    }
+  };
+
   const handleNext = () => {
-    if (currentQuestion < QUIZ_DATA.length - 1) {
+    if (currentQuestion < quizData.length - 1) {
       setCurrentQuestion(prev => prev + 1);
       setSelectedOption(null);
       setIsAnswered(false);
     } else {
       setShowResult(true);
+      saveScore(score);
     }
   };
 
   const getBadge = () => {
-    const percentage = (score / QUIZ_DATA.length) * 100;
+    const percentage = (score / quizData.length) * 100;
     if (percentage === 100) return { name: "Democracy Champion", icon: <Trophy />, color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/20" };
     if (percentage >= 70) return { name: "Informed Citizen", icon: <ShieldCheck />, color: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-400/20" };
     return { name: "Young Voter", icon: <Star />, color: "text-slate-500", bg: "bg-white/5", border: "border-white/10" };
@@ -110,6 +79,7 @@ const QuizEngine = () => {
         <button 
           onClick={handleStart}
           className="px-12 py-5 bg-orange-600 hover:bg-orange-700 rounded-2xl text-white font-black uppercase tracking-[0.2em] text-xs transition-all shadow-xl shadow-orange-600/30"
+          aria-label="Begin Challenge"
         >
           Begin Challenge
         </button>
@@ -132,12 +102,12 @@ const QuizEngine = () => {
         <h3 className="text-5xl font-black mb-8 text-white tracking-tighter italic">{badge.name}</h3>
         <div className="flex justify-center gap-12 mb-12">
           <div>
-            <p className="text-5xl font-black text-white">{score}/{QUIZ_DATA.length}</p>
+            <p className="text-5xl font-black text-white">{score}/{quizData.length}</p>
             <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest mt-2">Correct Answers</p>
           </div>
           <div className="w-px h-16 bg-white/10" />
           <div>
-            <p className="text-5xl font-black text-white">{Math.round((score / QUIZ_DATA.length) * 100)}%</p>
+            <p className="text-5xl font-black text-white">{Math.round((score / quizData.length) * 100)}%</p>
             <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest mt-2">Proficiency Rate</p>
           </div>
         </div>
@@ -145,10 +115,14 @@ const QuizEngine = () => {
           <button 
             onClick={handleStart}
             className="flex-1 py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] text-slate-300 flex items-center justify-center gap-3 transition-all"
+            aria-label="Restart Session"
           >
             <RotateCcw size={18} /> Restart Session
           </button>
-          <button className="flex-1 py-5 bg-blue-600 hover:bg-blue-700 rounded-[1.5rem] text-white font-black uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-3 shadow-xl shadow-blue-600/30">
+          <button 
+            className="flex-1 py-5 bg-blue-600 hover:bg-blue-700 rounded-[1.5rem] text-white font-black uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-3 shadow-xl shadow-blue-600/30"
+            aria-label="Share Milestone"
+          >
             Share Milestone
           </button>
         </div>
@@ -156,21 +130,21 @@ const QuizEngine = () => {
     );
   }
 
-  const question = QUIZ_DATA[currentQuestion];
+  const question = quizData[currentQuestion];
 
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* Progress Bar */}
       <div className="mb-12">
         <div className="flex justify-between text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4">
-          <span>Module progress: {currentQuestion + 1} / {QUIZ_DATA.length}</span>
-          <span>{Math.round(((currentQuestion + 1) / QUIZ_DATA.length) * 100)}%</span>
+          <span>Module progress: {currentQuestion + 1} / {quizData.length}</span>
+          <span>{Math.round(((currentQuestion + 1) / quizData.length) * 100)}%</span>
         </div>
-        <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 shadow-inner">
+        <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 shadow-inner" role="progressbar" aria-valuenow={((currentQuestion + 1) / quizData.length) * 100} aria-valuemin="0" aria-valuemax="100">
           <motion.div 
             className="h-full bg-gradient-to-r from-orange-500 to-orange-600"
             initial={{ width: 0 }}
-            animate={{ width: `${((currentQuestion + 1) / QUIZ_DATA.length) * 100}%` }}
+            animate={{ width: `${((currentQuestion + 1) / quizData.length) * 100}%` }}
           />
         </div>
       </div>
@@ -203,6 +177,7 @@ const QuizEngine = () => {
                 disabled={isAnswered}
                 onClick={() => handleOptionSelect(idx)}
                 className={`p-6 rounded-[2rem] border text-left transition-all flex justify-between items-center group relative overflow-hidden ${statusClass}`}
+                aria-label={`Option: ${option}`}
               >
                 <span className="font-bold text-sm leading-relaxed tracking-wide z-10">{option}</span>
                 {isAnswered && isCorrect && <CheckCircle2 className="text-green-500 shrink-0" size={24} />}
@@ -235,8 +210,9 @@ const QuizEngine = () => {
             <button 
               onClick={handleNext}
               className="w-full py-6 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-500 hover:to-orange-600 rounded-[2rem] text-white font-black uppercase tracking-[0.3em] text-xs flex items-center justify-center gap-4 group transition-all shadow-[0_20px_50px_rgba(234,88,12,0.3)]"
+              aria-label={currentQuestion === quizData.length - 1 ? "Complete Summary" : "Advance to next question"}
             >
-              {currentQuestion === QUIZ_DATA.length - 1 ? "Complete Summary" : "Advance to next question"}
+              {currentQuestion === quizData.length - 1 ? "Complete Summary" : "Advance to next question"}
               <ArrowRight size={20} className="group-hover:translate-x-3 transition-transform" />
             </button>
           </motion.div>
@@ -246,4 +222,4 @@ const QuizEngine = () => {
   );
 };
 
-export default QuizEngine;
+export default QuizSystem;

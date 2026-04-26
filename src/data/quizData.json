@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "question": "What is the minimum age to register as a voter in India?",
+    "options": ["16 Years", "18 Years", "21 Years", "25 Years"],
+    "answer": 1,
+    "explanation": "According to the Constitution of India, every citizen who is 18 years of age or older is entitled to be registered as a voter."
+  },
+  {
+    "id": 2,
+    "question": "What does VVPAT stand for in the voting process?",
+    "options": [
+      "Voter Verified Paper Audit Trail",
+      "Voter Value Print Action Tool",
+      "Visual Voter Paper Account Task",
+      "Voter Validated Power Audit Tech"
+    ],
+    "answer": 0,
+    "explanation": "VVPAT stands for Voter Verifiable Paper Audit Trail. It allows voters to verify that their vote was cast correctly."
+  },
+  {
+    "id": 3,
+    "question": "Which body conducts elections to the Parliament and State Legislatures in India?",
+    "options": [
+      "Supreme Court of India",
+      "Ministry of Home Affairs",
+      "Election Commission of India",
+      "Planning Commission"
+    ],
+    "answer": 2,
+    "explanation": "The Election Commission of India (ECI) is an autonomous constitutional authority responsible for administering election processes in India."
+  },
+  {
+    "id": 4,
+    "question": "How many Lok Sabha constituencies are there in India?",
+    "options": ["543", "250", "400", "552"],
+    "answer": 0,
+    "explanation": "There are currently 543 constituencies in the Lok Sabha. The members are elected from these constituencies via direct elections."
+  },
+  {
+    "id": 5,
+    "question": "What is the 'Silent Period' before polling starts?",
+    "options": [
+      "12 hours before poll ends",
+      "24 hours before poll starts",
+      "48 hours before conclusion of poll",
+      "Immediately after results are declared"
+    ],
+    "answer": 2,
+    "explanation": "Election campaigning must stop 48 hours before the conclusion of the poll. This is known as the 'Silent Period'."
+  }
+]

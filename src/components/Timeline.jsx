@@ -67,8 +67,16 @@ const Timeline = ({ onInteract }) => {
                 <div className={`w-full md:w-[42%] pl-20 md:pl-0 ${isEven ? 'md:pl-16' : 'md:pr-16'}`}>
                   <motion.div 
                     whileHover={{ scale: 1.02 }}
-                    className="glass-panel p-8 rounded-3xl cursor-pointer group transition-all relative overflow-hidden"
+                    className="glass-panel p-8 rounded-3xl cursor-pointer group transition-all relative overflow-hidden focus:ring-2 focus:ring-blue-500 outline-none"
                     onClick={() => setActiveStep(activeStep === item.id ? null : item.id)}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`View details for Phase ${item.id}: ${item.phase}`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        setActiveStep(activeStep === item.id ? null : item.id);
+                      }
+                    }}
                   >
                     <div className={`absolute top-0 left-0 w-1 h-full ${index < 3 ? 'bg-orange-500' : index < 6 ? 'bg-blue-500' : 'bg-green-500'}`} />
                     
@@ -117,6 +125,7 @@ const Timeline = ({ onInteract }) => {
                              onInteract(item.phase);
                           }}
                           className="w-full py-4 bg-blue-600 text-white rounded-2xl text-sm font-bold transition-all flex items-center justify-center gap-2 hover:bg-blue-700 shadow-xl shadow-blue-600/20"
+                          aria-label={`Ask AI Assistant about ${item.phase}`}
                         >
                           <MessageSquare size={18} /> Ask AI Assistant
                         </button>
